@@ -36,6 +36,7 @@ export default class PageList extends PureComponent {
     onPageScrollStateChanged: PropTypes.func,
     onPageScroll: PropTypes.func,
     flatListProps: PropTypes.object,
+    pageTransitionThreshold: PropTypes.number,
   };
 
   static defaultProps = {
@@ -48,6 +49,7 @@ export default class PageList extends PureComponent {
     sensitiveScroll: true,
     removeClippedSubviews: true,
     flatListProps: {},
+    pageTransitionThreshold: 1 / 3,
   };
 
   // Do not initialize to make onPageSelected(0) be dispatched
@@ -229,9 +231,9 @@ export default class PageList extends PureComponent {
         (this.scroller.getCurrX() -
           this.getScrollOffsetOfPage(this.currentPage)) /
         this.state.width;
-      if (progress > 1 / 3) {
+      if (progress > this.props.pageTransitionThreshold) {
         page += 1;
-      } else if (progress < -1 / 3) {
+      } else if (progress < -this.props.pageTransitionThreshold) {
         page -= 1;
       }
       page = Math.min(pageDataArray.length - 1, page);

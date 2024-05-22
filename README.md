@@ -11,6 +11,7 @@ An easy and simple to use React Native component that renders swipable performan
 <br/>
 
 ---
+
 <br/>
 
 <h1 align="center">
@@ -23,6 +24,7 @@ An easy and simple to use React Native component that renders swipable performan
 <br/>
 
 # :link: Quick Links
+
 - [Documentation](https://www.luehangs.site/lue_hang/projects/react-native-page-list)
 - [Mobile Kit Marketplace](https://luehangs.site/marketplace/mobile-development)
 - [React Native Development How To Dos](https://luehangs.site/blogs/react-native-development)
@@ -31,6 +33,7 @@ An easy and simple to use React Native component that renders swipable performan
 <br/>
 
 ---
+
 <br/>
 
 # :gem: Install
@@ -52,13 +55,14 @@ $ yarn add react-native-page-list
 <br/>
 
 ---
+
 <br/>
 <br/>
 <br/>
 
 ## :tada: Usage Example
 
-Add an ``import`` to the top of the file.  At minimal, place `array` data into the `data` prop and render the pages using the `renderItem` prop.
+Add an `import` to the top of the file. At minimal, place `array` data into the `data` prop and render the pages using the `renderItem` prop.
 
 > If you like [`react-native-page-list`](https://github.com/Luehang/react-native-page-list), please be sure to give it a star at [GitHub](https://github.com/Luehang/react-native-page-list). Thanks.
 
@@ -97,6 +101,7 @@ render() {
 <br/>
 
 ---
+
 <br/>
 
 # :book: Full Documentation
@@ -108,6 +113,7 @@ Learn more about the installation and how to use this package in the updated [do
 <br/>
 
 ---
+
 <br/>
 <br/>
 <br/>
@@ -125,6 +131,7 @@ Free and made possible along with costly maintenance and updates by [Lue Hang](h
 <br/>
 
 ---
+
 <br/>
 <br/>
 <br/>

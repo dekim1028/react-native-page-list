@@ -48,7 +48,8 @@
   "dependencies": {
     "prop-types": "^15.6.2",
     "react-native-easy-guesture-responder": "^1.1.2",
-    "react-native-scrolling": "^1.0.2"
+    "react-native-scrolling": "^1.0.2",
+    "@shopify/flash-list": "^1.6.4"
   },
   "peerDependencies": {
     "react": "*",

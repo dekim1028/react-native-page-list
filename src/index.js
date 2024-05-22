@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import {
   Dimensions,
-  FlatList,
   InteractionManager,
   View,
   ViewPropTypes,
@@ -11,6 +10,7 @@ import {
 } from "react-native";
 import { createResponder } from "react-native-easy-guesture-responder";
 import Scrolling from "react-native-scrolling";
+import { FlashList } from "@shopify/flash-list";
 
 const MIN_FLING_VELOCITY = 0.5;
 
@@ -20,7 +20,6 @@ export default class PageList extends PureComponent {
   static propTypes = {
     ...View.propTypes,
     initialPage: PropTypes.number,
-    initialNumToRender: PropTypes.number,
     pageMargin: PropTypes.number,
     scrollViewStyle: ViewPropTypes ? ViewPropTypes.style : View.propTypes.style,
     scrollEnabled: PropTypes.bool,
@@ -37,11 +36,12 @@ export default class PageList extends PureComponent {
     onPageScroll: PropTypes.func,
     flatListProps: PropTypes.object,
     pageTransitionThreshold: PropTypes.number,
+    estimatedItemSize: PropTypes.number,
+    drawDistance: PropTypes.number,
   };
 
   static defaultProps = {
     initialPage: 0,
-    initialNumToRender: 7,
     pageMargin: 0,
     scrollEnabled: true,
     data: [],
@@ -439,8 +439,7 @@ export default class PageList extends PureComponent {
               backgroundColor: this.props.backgroundColor || "black",
             }}
           />
-          <FlatList
-            {...this.props.flatListProps}
+          <FlashList
             style={[
               { flex: 1, backgroundColor: "transparent" },
               scrollViewStyle,
@@ -454,18 +453,10 @@ export default class PageList extends PureComponent {
             renderItem={this.renderRow}
             onLayout={this.onLayout}
             removeClippedSubviews={this.props.removeClippedSubviews}
-            initialNumToRender={this.props.initialNumToRender}
-            // use contentOffset instead of
-            // initialScrollIndex so that we don"t have
-            // to use the buggy "getItemLayout" prop.
-            // eslint-disable-next-line radix
-            contentOffset={{
-              x: this.getScrollOffsetOfPage(
-                // eslint-disable-next-line
-                parseInt(this.props.initialPage)
-              ),
-              y: 0,
-            }}
+            initialScrollIndex={this.props.initialPage}
+            estimatedItemSize={this.props.estimatedItemSize}
+            drawDistance={this.props.drawDistance}
+            flatListProps={this.props.flatListProps}
           />
         </View>
         <Animated.View

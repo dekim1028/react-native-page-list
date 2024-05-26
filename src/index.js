@@ -7,6 +7,7 @@ import {
   ViewPropTypes,
   Animated,
   Easing,
+  FlatList,
 } from "react-native";
 import { createResponder } from "react-native-easy-guesture-responder";
 import Scrolling from "react-native-scrolling";
@@ -38,6 +39,7 @@ export default class PageList extends PureComponent {
     pageTransitionThreshold: PropTypes.number,
     estimatedItemSize: PropTypes.number,
     drawDistance: PropTypes.number,
+    enableFastList: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -50,6 +52,7 @@ export default class PageList extends PureComponent {
     removeClippedSubviews: true,
     flatListProps: {},
     pageTransitionThreshold: 1 / 3,
+    enableFastList: true,
   };
 
   // Do not initialize to make onPageSelected(0) be dispatched
@@ -358,6 +361,62 @@ export default class PageList extends PureComponent {
     return index.toString();
   }
 
+  renderFlashList({ scrollViewStyle, pageDataArray }) {
+    return (
+      <FlashList
+        {...this.props.flatListProps}
+        style={[
+          { flex: 1, backgroundColor: "transparent" },
+          scrollViewStyle,
+          this.props.flatListProps.style,
+        ]}
+        ref={(component) => (this.innerFlatList = component)}
+        keyExtractor={this.keyExtractor}
+        scrollEnabled={false}
+        horizontal={true}
+        data={pageDataArray}
+        renderItem={this.renderRow}
+        onLayout={this.onLayout}
+        removeClippedSubviews={this.props.removeClippedSubviews}
+        initialScrollIndex={this.props.initialPage}
+        estimatedItemSize={this.props.estimatedItemSize}
+        drawDistance={this.props.drawDistance}
+      />
+    );
+  }
+
+  renderFlatList({ scrollViewStyle, pageDataArray }) {
+    return (
+      <FlatList
+        {...this.props.flatListProps}
+        style={[
+          { flex: 1, backgroundColor: "transparent" },
+          scrollViewStyle,
+          this.props.flatListProps.style,
+        ]}
+        ref={(component) => (this.innerFlatList = component)}
+        keyExtractor={this.keyExtractor}
+        scrollEnabled={false}
+        horizontal={true}
+        data={pageDataArray}
+        renderItem={this.renderRow}
+        onLayout={this.onLayout}
+        removeClippedSubviews={this.props.removeClippedSubviews}
+        initialScrollIndex={this.props.initialPage}
+        initialNumToRender={Math.round(
+          this.props.drawDistance / this.props.estimatedItemSize
+        )}
+        getItemLayout={(data, index) => {
+          return {
+            length: this.props.estimatedItemSize,
+            offset: this.props.estimatedItemSize * index,
+            index,
+          };
+        }}
+      />
+    );
+  }
+
   renderRow({ item, index }) {
     // eslint-disable-next-line no-shadow
     const { width, height } = this.state;
@@ -439,25 +498,9 @@ export default class PageList extends PureComponent {
               backgroundColor: this.props.backgroundColor || "black",
             }}
           />
-          <FlashList
-            style={[
-              { flex: 1, backgroundColor: "transparent" },
-              scrollViewStyle,
-              this.props.flatListProps.style,
-            ]}
-            ref={(component) => (this.innerFlatList = component)}
-            keyExtractor={this.keyExtractor}
-            scrollEnabled={false}
-            horizontal={true}
-            data={pageDataArray}
-            renderItem={this.renderRow}
-            onLayout={this.onLayout}
-            removeClippedSubviews={this.props.removeClippedSubviews}
-            initialScrollIndex={this.props.initialPage}
-            estimatedItemSize={this.props.estimatedItemSize}
-            drawDistance={this.props.drawDistance}
-            flatListProps={this.props.flatListProps}
-          />
+          {this.props.enableFastList
+            ? this.renderFlatList({ scrollViewStyle, pageDataArray })
+            : this.renderFlashList({ scrollViewStyle, pageDataArray })}
         </View>
         <Animated.View
           pointerEvents="box-none"

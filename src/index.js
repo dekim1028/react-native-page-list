@@ -39,7 +39,7 @@ export default class PageList extends PureComponent {
     pageTransitionThreshold: PropTypes.number,
     estimatedItemSize: PropTypes.number,
     drawDistance: PropTypes.number,
-    enableFastList: PropTypes.bool,
+    enableFlatList: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -52,7 +52,7 @@ export default class PageList extends PureComponent {
     removeClippedSubviews: true,
     flatListProps: {},
     pageTransitionThreshold: 1 / 3,
-    enableFastList: true,
+    enableFlatList: true,
   };
 
   // Do not initialize to make onPageSelected(0) be dispatched
@@ -498,7 +498,7 @@ export default class PageList extends PureComponent {
               backgroundColor: this.props.backgroundColor || "black",
             }}
           />
-          {this.props.enableFastList
+          {this.props.enableFlatList
             ? this.renderFlatList({ scrollViewStyle, pageDataArray })
             : this.renderFlashList({ scrollViewStyle, pageDataArray })}
         </View>

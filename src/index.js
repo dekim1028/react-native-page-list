@@ -294,21 +294,19 @@ export default class PageList extends PureComponent {
 
     const finalX = this.getScrollOffsetOfPage(page);
     if (immediate) {
-      InteractionManager.runAfterInteractions(() => {
-        this.scroller.startScroll(
-          this.scroller.getCurrX(),
-          0,
-          finalX - this.scroller.getCurrX(),
-          0,
-          0
-        );
-        this.innerFlatList &&
-          this.innerFlatList.scrollToOffset({
-            offset: finalX,
-            animated: false,
-          });
-        this.innerFlatList && this.innerFlatList.recordInteraction();
-      });
+      this.scroller.startScroll(
+        this.scroller.getCurrX(),
+        0,
+        finalX - this.scroller.getCurrX(),
+        0,
+        0
+      );
+      this.innerFlatList &&
+        this.innerFlatList.scrollToOffset({
+          offset: finalX,
+          animated: false,
+        });
+      this.innerFlatList && this.innerFlatList.recordInteraction();
     } else {
       this.scroller.startScroll(
         this.scroller.getCurrX(),

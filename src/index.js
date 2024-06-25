@@ -158,7 +158,13 @@ export default class PageList extends PureComponent {
     if (this.layoutChanged) {
       this.layoutChanged = false;
       if (typeof this.currentPage === "number") {
+        // this is here to work around a bug in FlatList
+        requestAnimationFrame(() => {
+          this.scrollByOffset(1);
+        });
+
         this.scrollToPage(this.currentPage, true);
+        this.scrollByOffset(-1);
       }
     } else if (
       this.currentPage + 1 >= pageDataArray.length &&
